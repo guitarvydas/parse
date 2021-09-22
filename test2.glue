@@ -1,2 +1,2 @@
-Main [khello @s1 kgoodbye @s2] = [[${khello}${s1}${kgoodbye}${s2}]]
+Main [khello sep1 @s1 sep2 kgoodbye sep3 @s2 @sep4] = [[${khello}${sep1}${s1}${sep2}${kgoodbye}${sep3}${s2}${sep4}]]
 stuff [c] = [[${c}]]

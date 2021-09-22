@@ -250,7 +250,7 @@ function ohm_parse (grammar, text, errorMessage) {
     if (cst.succeeded ()) {
 	return { parser: parser, cst: cst };
     } else {
-	//console.log (parser.trace (text).toString ());
+	console.log (parser.trace (text).toString ());
 	throw ("FAIL: " + errorMessage);
     }
 }

@@ -1,4 +1,6 @@
 Test2 {
-Main = "hello" stuff* "goodbye" stuff*
-stuff = ~space any
+Main = "hello" separator stuff* separator "goodbye" separator stuff* separator*
+stuff = ~separator any
+separator = ";"
 }
+
