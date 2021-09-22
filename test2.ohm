@@ -1,0 +1,4 @@
+Test2 {
+Main = "hello" stuff* "goodbye" stuff*
+stuff = ~space any
+}

@@ -1,7 +1,6 @@
 'use strict'
 
 var ohm = require ('ohm-js');
-var support = require ('./support.js');
 
 const glueGrammar =
       String.raw`
@@ -245,8 +244,8 @@ return _result;
 };
 
 
-function ohm_parse (grammar, text, support, errorMessage) {
-    var parser = ohm.grammar (grammar, support);
+function ohm_parse (grammar, text, errorMessage) {
+    var parser = ohm.grammar (grammar);
     var cst = parser.match (text);
     if (cst.succeeded ()) {
 	return { parser: parser, cst: cst };
@@ -256,8 +255,8 @@ function ohm_parse (grammar, text, support, errorMessage) {
     }
 }
 
-function transpiler (scnText, grammar, semOperation, semanticsObject, support, errorMessage) {
-    var { parser, cst } = ohm_parse (grammar, scnText, support, errorMessage);
+function transpiler (scnText, grammar, semOperation, semanticsObject, errorMessage) {
+    var { parser, cst } = ohm_parse (grammar, scnText, errorMessage);
     var sem = {};
     try {
 	if (cst.succeeded ()) {
@@ -345,14 +344,14 @@ function _ruleExit (ruleName) {
 
 var fs = require ('fs');
 
-function execTranspiler (source, grammar, semantics, support, errorMessage) {
+function execTranspiler (source, grammar, semantics, errorMessage) {
     // first pass - transpile glue code to javascript
-    let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, support, "(in glue specification) " + errorMessage);
+    let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, "(in glue specification) " + errorMessage);
     
     _ruleInit();
     try {
         let semObject = eval('(' + generatedSCNSemantics + ')');
-        let tr = transpiler(source, grammar, "_glue", semObject, support, errorMessage);
+        let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
 	return tr;
     }
     catch (err) {
@@ -363,18 +362,14 @@ function execTranspiler (source, grammar, semantics, support, errorMessage) {
 function internal_stranspile (sourceString, grammarFileName, glueFileName, errorMessage) {
     var grammar = fs.readFileSync (grammarFileName, 'utf-8');
     var glue = fs.readFileSync (glueFileName, 'utf-8');
-    var returnString = execTranspiler (sourceString, grammar, glue, support, errorMessage);
+    var returnString = execTranspiler (sourceString, grammar, glue, errorMessage);
     return returnString;
 }
 
-exports.stranspile = (sourceString, grammarFileName, glueFileName, support, errorMessage) => {
-    return internal_stranspile (sourceString, grammarFileName, glueFileName, support, errorMessage);
-}
-
-function ftranspile (sourceFileName, grammarFileName, glueFileName, support, errorMessage) {
+function ftranspile (sourceFileName, grammarFileName, glueFileName, errorMessage) {
     try {
 	var source = fs.readFileSync (sourceFileName, 'utf-8');
-	return internal_stranspile (source, grammarFileName, glueFileName, support, errorMessage);
+	return internal_stranspile (source, grammarFileName, glueFileName, errorMessage);
     }
     catch (err) {
 	process.stderr.write (err.toString ());
@@ -391,7 +386,7 @@ function main () {
     var sourceFileName = args[2];
     var grammarFileName = args[3];
     var actionFileName = args[4];
-    var result = ftranspile (sourceFileName, grammarFileName, actionFileName, null, 'parse');
+    var result = ftranspile (sourceFileName, grammarFileName, actionFileName, 'parse');
     console.log (result);
 }
 

@@ -1,0 +1,2 @@
+Main [khello @s1 kgoodbye @s2] = [[${khello}${s1}${kgoodbye}${s2}]]
+stuff [c] = [[${c}]]
