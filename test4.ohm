@@ -1,0 +1,11 @@
+URLS {
+main = textAndURL+ stuff*
+textAndURL = stuff* urlRef
+stuff = ~urlRef any
+urlRef = referencesRef | tocRef | otherRef
+referencesRef = "[" "References" "]" "(" notRPAR+ ")"
+tocRef = "[" "Table of Contents" "]" "(" notRPAR+ ")"
+otherRef = "[" notRBracket+ "]" "(" notRPAR+ ")"
+notRBracket = ~"]" any
+notRPAR = ~")" any
+}
