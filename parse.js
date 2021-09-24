@@ -245,7 +245,6 @@ return _result;
 
 
 function ohm_parse (grammar, text, errorMessage) {
-    process.stderr.write ("ohm_parse\n");
     var parser = ohm.grammar (grammar);
     var cst = parser.match (text);
     if (cst.succeeded ()) {
