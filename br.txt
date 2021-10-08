@@ -1,0 +1,14 @@
+I'm getting this problem:
+...
+Error: Found errors in the action dictionary of the '_glue' operation:
+- Semantic action '_iter' has the wrong arity: expected 1, got 0
+
+where my semantic action is:
+
+...
+    _iter: function (...children) { return children.map (c => c._glue ()); },
+    _terminal: function () { return this.primitiveValue; }
+};
+
+This might be due to my error (very likely), but I don't see what is wrong.  I thought I'd ask before taking the time to build up a proper example...
+

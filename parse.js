@@ -60,7 +60,7 @@ var glueSemantics = {
 	return `
 {
 ${__2s}
-_terminal: function () { return this.primitiveValue; }
+_terminal: function () { return this.primitiveValue; },
 }`; 
     },
     semanticsStatement: function (_1, _2s, _3, _4s, _5, _6, _7s, _8, _9s, _10s, _11, _12s) {
