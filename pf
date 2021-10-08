@@ -1,3 +1,4 @@
 #!/bin/bash
-pdir=~/quicklisp/local-projects/parse
+# usage: pf source-file grammar-file
+pdir=~/quicklisp/local-projects/pfr
 node $pdir/pf.js $1 $2

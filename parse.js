@@ -1,6 +1,9 @@
 'use strict'
 
+var viewGeneratedCode = false;
+
 var ohm = require ('ohm-js');
+var support;
 
 const glueGrammar =
       String.raw`
@@ -352,6 +355,11 @@ function execTranspiler (source, grammar, semantics, errorMessage) {
     
     _ruleInit();
     try {
+	if (viewGeneratedCode) {
+	    console.error ("[ execTranspiler");
+	    console.error (generatedSCNSemantics);
+	    console.error ("execTranspiler ]");
+	}
         let semObject = eval('(' + generatedSCNSemantics + ')');
         let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
 	return tr;
@@ -388,6 +396,10 @@ function main () {
     var sourceFileName = args[2];
     var grammarFileName = args[3];
     var actionFileName = args[4];
+    if (args.length === 6) {
+	var supportFileName = args[5];
+	support = require (supportFileName);
+    }
     var result = ftranspile (sourceFileName, grammarFileName, actionFileName, 'parse');
     console.log (result);
 }
