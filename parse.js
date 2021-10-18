@@ -252,9 +252,9 @@ function traceSpaces () {
 }
 
 function _ruleEnter (ruleName) {
-    traceDepth += 1;
-    traceSpaces ();
     if (tracing) {
+	traceDepth += 1;
+	traceSpaces ();
 	process.stderr.write("enter: ");
 	process.stderr.write (ruleName.toString ());
 	process.stderr.write ("\n");
@@ -263,9 +263,9 @@ function _ruleEnter (ruleName) {
 }
 
 function _ruleExit (ruleName) {
-    traceSpaces ();
-    traceDepth -= 1;
     if (tracing) {
+	traceSpaces ();
+	traceDepth -= 1;
 	process.stderr.write("exit: "); 
 	process.stderr.write (ruleName); 
 	process.stderr.write ("\n");
