@@ -156,7 +156,8 @@ function ohm_parse (grammar, text, errorMessage) {
 	// console.log (parser.trace (text).toString ());
 	// console.log (text.length);
 	// console.log ("/" + text + "/");
-	throw ("FAIL: " + errorMessage);
+	var pos = cst._rightmostFailurePosition;
+	throw ("FAIL: at position " + pos.toString () + " " + errorMessage);
     }
 }
 
@@ -251,7 +252,7 @@ var fs = require ('fs');
 
 function execTranspiler (source, grammar, semantics, errorMessage) {
     // first pass - transpile glue code to javascript
-    let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, "(in glue specification) " + errorMessage);
+    let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, "in action (glue) specification " + errorMessage);
     
     _ruleInit();
     try {
