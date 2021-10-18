@@ -1,6 +1,8 @@
 'use strict'
 
 var viewGeneratedCode = false;
+var tracing = false;
+var traceDepth;
 
 var ohm = require ('ohm-js');
 var support;
@@ -238,13 +240,36 @@ function _ruleInit () {
     _scope = new scopeStack ();
 }
 
+function traceSpaces () {
+    var n = traceDepth;
+    while (n > 0) {
+	process.stderr.write (" ");
+	n -= 1;
+    }
+    process.stderr.write ('[');
+    process.stderr.write (traceDepth.toString ());
+    process.stderr.write (']');
+}
+
 function _ruleEnter (ruleName) {
-    //process.stderr.write("enter: ");    process.stderr.write (ruleName.toString ()); process.stderr.write ("\n");
+    traceDepth += 1;
+    traceSpaces ();
+    if (tracing) {
+	process.stderr.write("enter: ");
+	process.stderr.write (ruleName.toString ());
+	process.stderr.write ("\n");
+    }
     _scope.pushNew ();
 }
 
 function _ruleExit (ruleName) {
-    //process.stderr.write("exit: "); process.stderr.write (ruleName); process.stderr.write ("\n");
+    traceSpaces ();
+    traceDepth -= 1;
+    if (tracing) {
+	process.stderr.write("exit: "); 
+	process.stderr.write (ruleName); 
+	process.stderr.write ("\n");
+    }
     _scope.pop ();
 }
 
@@ -297,9 +322,16 @@ function main () {
     var sourceFileName = args[2];
     var grammarFileName = args[3];
     var actionFileName = args[4];
-    if (args.length === 6) {
+    if (args.length >= 6) {
 	var supportFileName = args[5];
 	support = require (supportFileName);
+    }
+    if (args.length >= 7) {
+	var traceFlag = args[6];
+	if (traceFlag === 't') {
+	    tracing = true;
+	    traceDepth = 0;
+	}
     }
     var result = ftranspile (sourceFileName, grammarFileName, actionFileName, 'parse');
     console.log (result);
