@@ -164,19 +164,21 @@ function ohm_parse (grammar, text, errorMessage) {
 }
 
 function transpiler (scnText, grammar, semOperation, semanticsObject, errorMessage) {
-    var { parser, cst } = ohm_parse (grammar, scnText, errorMessage);
-    var sem = {};
-    try {
-	if (cst.succeeded ()) {
-	    sem = parser.createSemantics ();
-	    sem.addOperation (semOperation, semanticsObject);
-	    let result = sem (cst)[semOperation]();
-	    return result;
-	} else {
-	    throw ("fail: " + " " + errorMessage);
+	var { parser, cst } = ohm_parse (grammar, scnText, errorMessage);
+	var sem = {};
+	try {
+	    if (cst.succeeded ()) {
+		sem = parser.createSemantics ();
+		sem.addOperation (semOperation, semanticsObject);
+		let result = sem (cst)[semOperation]();
+		return result;
+	    } else {
+		throw ("fail: " + " " + errorMessage);
+	    }
 	}
     }
     catch (err) {
+	console.error ("syntax error");
 	throw err;
     }
 }
@@ -287,7 +289,12 @@ function execTranspiler (source, grammar, semantics, errorMessage) {
 	    console.error ("execTranspiler ]");
 	}
         let semObject = eval('(' + generatedSCNSemantics + ')');
-        let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
+	try {
+            let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
+	} catch (err) {
+	    console.error ('syntax error in source');
+	    throw err;
+	}
 	return tr;
     }
     catch (err) {

@@ -10,12 +10,19 @@ function main () {
     var source = fs.readFileSync (sourceFileName, 'utf-8');
     var grammarFileName = args[3];
     var grammar = fs.readFileSync (grammarFileName, 'utf-8');
-    var parser = ohm.grammar (grammar);
-    var cst = parser.match (source);
-    if (cst.succeeded ()) {
-	console.log (sourceFileName);
-    } else {
-	// silence
+    try {
+	var parser = ohm.grammar (grammar);
+    } catch (err) {
+	console.error (`pf: fatal error in grammar ${grammarFileName}`);
+    }
+    try {
+	var cst = parser.match (source);
+	if (cst.succeeded ()) {
+	    console.log (sourceFileName);
+	} else {
+	    // silence
+	}
+    } catch (err) {
     }
 }
 
