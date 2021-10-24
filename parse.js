@@ -164,21 +164,18 @@ function ohm_parse (grammar, text, errorMessage) {
 }
 
 function transpiler (scnText, grammar, semOperation, semanticsObject, errorMessage) {
-	var { parser, cst } = ohm_parse (grammar, scnText, errorMessage);
-	var sem = {};
-	try {
-	    if (cst.succeeded ()) {
-		sem = parser.createSemantics ();
-		sem.addOperation (semOperation, semanticsObject);
-		let result = sem (cst)[semOperation]();
-		return result;
-	    } else {
-		throw ("fail: " + " " + errorMessage);
-	    }
+    var { parser, cst } = ohm_parse (grammar, scnText, errorMessage);
+    var sem = {};
+    try {
+	if (cst.succeeded ()) {
+	    sem = parser.createSemantics ();
+	    sem.addOperation (semOperation, semanticsObject);
+	    let result = sem (cst)[semOperation]();
+	    return result;
+	} else {
+	    throw ("fail: " + " " + errorMessage);
 	}
-    }
-    catch (err) {
-	console.error ("syntax error");
+    } catch (err) {
 	throw err;
     }
 }
@@ -279,25 +276,27 @@ var fs = require ('fs');
 
 function execTranspiler (source, grammar, semantics, errorMessage) {
     // first pass - transpile glue code to javascript
-    let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, "in action (glue) specification " + errorMessage);
-    
-    _ruleInit();
     try {
-	if (viewGeneratedCode) {
-	    console.error ("[ execTranspiler");
-	    console.error (generatedSCNSemantics);
-	    console.error ("execTranspiler ]");
-	}
-        let semObject = eval('(' + generatedSCNSemantics + ')');
+	let generatedSCNSemantics = transpiler (semantics, glueGrammar, "_glue", glueSemantics, "in action (glue) specification " + errorMessage);
+    _ruleInit();
 	try {
-            let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
-	} catch (err) {
-	    console.error ('syntax error in source');
+	    if (viewGeneratedCode) {
+		console.error ("[ execTranspiler");
+		console.error (generatedSCNSemantics);
+		console.error ("execTranspiler ]");
+	    }
+            let semObject = eval('(' + generatedSCNSemantics + ')');
+	    try {
+		let tr = transpiler(source, grammar, "_glue", semObject, errorMessage);
+		return tr;
+	    } catch (err) {
+		throw err;
+	    }
+	}
+	catch (err) {
 	    throw err;
 	}
-	return tr;
-    }
-    catch (err) {
+    } catch (err) {
 	throw err;
     }
 }
