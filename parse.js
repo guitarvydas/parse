@@ -310,7 +310,13 @@ function internal_stranspile (sourceString, grammarFileName, glueFileName, error
 
 function ftranspile (sourceFileName, grammarFileName, glueFileName, errorMessage) {
     try {
-	var source = fs.readFileSync (sourceFileName, 'utf-8');
+	var source;
+	if (sourceFileName === "-") {
+	    source = fs.readFileSync ('/dev/fd/0', 'utf-8');
+	    // source = fs.readFileSync ('/dev/stdin', 'utf-8');
+	} else {
+	    source = fs.readFileSync (sourceFileName, 'utf-8');
+	}
 	return internal_stranspile (source, grammarFileName, glueFileName, errorMessage);
     }
     catch (err) {

@@ -7,7 +7,12 @@ var fs = require ('fs');
 function main () {
     var args = process.argv;
     var sourceFileName = args[2];
-    var source = fs.readFileSync (sourceFileName, 'utf-8');
+    var source;
+    if (sourceFileName === "-") {
+	source = fs.readFileSync ('/dev/fd/0', 'utf-8');
+    } else {
+	source = fs.readFileSync (sourceFileName, 'utf-8');
+    }
     var grammarFileName = args[3];
     var grammar = fs.readFileSync (grammarFileName, 'utf-8');
     try {
