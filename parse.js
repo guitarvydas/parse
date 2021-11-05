@@ -121,12 +121,14 @@ return _result;
     pname: function (_1, _2s) { var __1 = _1._glue (); var __2s = _2s._glue ().join (''); return __1 + __2s;},
     rewrites: function (_1) { var __1 = _1._glue (); return __1; },
     rw1: function (_1, _2s, codeQ, _3, _4, _5s) {
+	var __2 = _2s._glue ().join ('');
 	var code = codeQ._glue ();
 	var __3 = _3._glue ();
 	if (0 === code.length) {
-  	    return __3;
+  	    return `${__2}${__3}`;
 	} else {
-	    //		process.stderr.write ('code is NOT empty\n');
+	    process.stderr.write ('code is NOT empty\n');
+	    throw "code in rw1 NIY";
   	    return `${code}${__3}`;
 	}
     },
