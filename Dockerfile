@@ -1,0 +1,22 @@
+# more detail: https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
+
+FROM node:latest
+RUN npm -g install atob
+RUN npm -g install pako
+RUN npm -g install ohm-js
+RUN export NODE_PATH=/usr/local/lib
+
+COPY . .
+
+# target text: $1
+# .ohm file: $2
+# .glue file: $3
+# support=$4
+# tflag=$5
+# vflag=$6
+
+ENTRYPOINT node parse.js $0
+
+
+# docker build . --tag pfr
+# docker run pfr
