@@ -15,7 +15,8 @@ COPY . .
 # tflag=$5
 # vflag=$6
 
-ENTRYPOINT node parse.js $0
+#ENTRYPOINT echo node parse.js $0 ; node parse.js $0
+ENTRYPOINT ["node", "parse.js"]
 
 
 # docker build . --tag pfr

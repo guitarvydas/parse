@@ -1,12 +1,8 @@
 clear
-set -x
 
-rm -f Dockerfile
-cp Dockerfile-pfr Dockerfile
-docker build . --tag pfr
-docker run pfr 'test.txt test.ohm test.action'
+docker stop util
+docker rmi --force util
+docker build . --tag util
 
-rm -f Dockerfile
-cp Dockerfile-pf Dockerfile
-docker build . --tag pf
-docker run pf 'test.txt test.ohm'
+docker run util pfr test.txt test.ohm test.action
+docker run util pf test.txt test.ohm
