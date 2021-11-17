@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+trap 'catch' ERR
+
+catch () {
+    exit 1
+}
+
+# usage: pf source-file grammar-file rewrite-file
+temp=`which dpfrs`
+srcdir=`dirname ${temp}`
+node ${srcdir}/parse.js $1 $2 $3 $4
