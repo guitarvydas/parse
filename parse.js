@@ -62,7 +62,7 @@ var glueSemantics = {
 	return `
 {
 ${__2s}
-_terminal: function () { return this.primitiveValue; },
+_terminal: function () { return this.sourceString; },
 _iter: function (...children) { return children.map(c => c._glue ()); },
 }`; 
     },
@@ -149,7 +149,7 @@ return _result;
     codeString: function (_1) { return _1._glue (); },
 
     _iter: function (...children) { return children.map(c => c._glue ()); },
-    _terminal: function () { return this.primitiveValue; }
+    _terminal: function () { return this.sourceString; }
 };
 
 
