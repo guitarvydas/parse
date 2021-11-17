@@ -1,0 +1,5 @@
+#!/bin/bash
+arg1=`realpath $1`
+arg2=`realpath $2`
+dir=`dirname ${arg1}`
+docker run --name pf --rm -v "${dir}/:${dir}" pt ipf ${arg1} ${arg2}
