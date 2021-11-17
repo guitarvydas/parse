@@ -63,6 +63,7 @@ var glueSemantics = {
 {
 ${__2s}
 _terminal: function () { return this.primitiveValue; },
+_iter: function (...children) { return children.map(c => c._glue ()); },
 }`; 
     },
     semanticsStatement: function (_1, _2s, _3, _4s, _5, _6, _7s, _8, _9s, _10s, _11, _12s) {
@@ -147,6 +148,7 @@ return _result;
     code: function (_1, _2s, _3, _4, _5s) { return _3._glue (); },
     codeString: function (_1) { return _1._glue (); },
 
+    _iter: function (...children) { return children.map(c => c._glue ()); },
     _terminal: function () { return this.primitiveValue; }
 };
 
