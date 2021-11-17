@@ -1,7 +1,15 @@
 #!/bin/bash
-arg1=`realpath $1`
+if [ "$1" = "-" ]
+then
+    arg1="-"
+    interactive="-i "
+else
+    arg1=`realpath $1`
+    interactive=""
+fi
 arg2=`realpath $2`
 arg3=`realpath $3`
 arg4=`realpath $4`
-dir=`dirname ${arg1}`
-docker run --name pfrs --rm -v "${dir}/:${dir}" pt ipfrs ${arg1} ${arg2} ${arg3} ${arg4}
+currdir=`pwd`
+dir=`dirname ${currdir}`
+docker run --rm -v "${dir}/:${dir}" ${interactive} pt ipfrs ${arg1} ${arg2} ${arg3} ${arg4}

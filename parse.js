@@ -340,6 +340,9 @@ function main () {
     var actionFileName = args[4];
     if (args.length >= 6) {
 	var supportFileName = args[5];
+	console.error (`supportFileName = [${supportFileName}]`);
+	var s = fs.readFileSync (supportFileName);
+	console.error (`read ~{s.length} bytes`);
 	support = require (supportFileName);
     }
     if (args.length >= 7) {

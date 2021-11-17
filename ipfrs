@@ -10,4 +10,8 @@ catch () {
 # usage: pf source-file grammar-file rewrite-file
 temp=`which dpfrs`
 srcdir=`dirname ${temp}`
+echo
+echo ipfrs.bash
+set -x
+echo node ${srcdir}/parse.js $1 $2 $3 $4
 node ${srcdir}/parse.js $1 $2 $3 $4
