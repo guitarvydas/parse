@@ -63,7 +63,7 @@ var glueSemantics = {
 {
 ${__2s}
 _terminal: function () { return this.sourceString; },
-_iter: function (children) { return children.map(c => c._glue ()); }
+_iter: function (...children) { return children.map(c => c._glue ()); }
 }`; 
     },
     semanticsStatement: function (_1, _2s, _3, _4s, _5, _6, _7s, _8, _9s, _10s, _11, _12s) {
@@ -148,7 +148,8 @@ return _result;
     code: function (_1, _2s, _3, _4, _5s) { return _3._glue (); },
     codeString: function (_1) { return _1._glue (); },
 
-    _iter: function (children) { return children.map(c => c._glue ()); },
+    // Ohm v16 requires ...children, previous versions require no ...
+    _iter: function (...children) { return children.map(c => c._glue ()); },
     _terminal: function () { return this.sourceString; }
 };
 
@@ -159,9 +160,10 @@ function ohm_parse (grammar, text, errorMessage) {
     if (cst.succeeded ()) {
 	return { parser: parser, cst: cst };
     } else {
-	// console.log (parser.trace (text).toString ());
-	// console.log (text.length);
-	// console.log ("/" + text + "/");
+	// console.error (parser.trace (text).toString ());
+	// console.error (text.length);
+	// console.error ("/" + text + "/");
+	// or ... console.error (text);
 	var pos = cst._rightmostFailurePosition;
 	throw ("FAIL: at position " + pos.toString () + " " + errorMessage);
     }
